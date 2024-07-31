@@ -1,0 +1,164 @@
+Code 2=>
+import java.util.*;
+
+class MySolution {
+	public static void main (String[] args) {
+	 // Initalization of array of apples
+	 Integer[] appleWeights = {400, 100, 400, 300, 200, 300, 100, 200};
+	 
+	 // sorting the apples in reverse order
+	 Arrays.sort(appleWeights, (a, b) -> b - a);
+
+// creating the person with constributed money
+	 ArrayList<Person> allPerson=new ArrayList<>();
+	 allPerson.add(new Person("Ram",50));
+	 allPerson.add(new Person("Sham",30));
+	 allPerson.add(new Person("Rahim",20));
+	 
+/*	 allPerson.add(new Person("Ram",100));
+	 allPerson.add(new Person("Sham",0));
+	 allPerson.add(new Person("Rahim",0));
+	 
+	 allPerson.add(new Person("Ram",70));
+	 allPerson.add(new Person("Sham",30));
+	 allPerson.add(new Person("Rahim",0));*/
+	 
+	 
+// finding the totol amount
+	 int totol=0;
+	 for(Person p:allPerson){
+	     totol+=p.addMoney;
+	 }
+	 
+	 
+// itrating over the array of apples
+	 for(int w:appleWeights){
+	     Person rightPerson=null;
+	      double min=Double.MAX_VALUE;
+	      
+// checking which person is elligibe for apple
+	     for(Person p: allPerson){
+	         double ratio=(double)p.totalWeight/(p.addMoney);
+	         if(ratio<min){
+	             min=ratio;
+	             rightPerson=p;
+	         }
+	     }
+// provideing correct person and updating its netWeight and totalWeight
+	     if(rightPerson!=null){
+	         rightPerson.apples.add(w);
+	         rightPerson.totalWeight= rightPerson.totalWeight+w;
+	     }
+	 }
+
+// Display optimal distribution on apples
+	 System.out.println("Distribute apples based on their money constribution :");
+	 for( Person p:allPerson){
+	     System.out.println(p.name+": "+p.apples);
+	 }
+	 
+	}
+}
+// Defining the Person and its required field
+class Person{
+    String name;
+    int totalWeight;
+    int addMoney;
+    ArrayList<Integer> apples;
+
+// creating parametrise constructor
+   public Person(String name,int addMoney){
+        this.name=name;
+        this.addMoney=addMoney;
+        this.totalWeight=0;
+        this.apples=new ArrayList<>();
+    }
+}
+
+code 3=>
+import java.util.*;
+
+class MySolution {
+    public static String path;
+	public static void main (String[] args) {
+	    char arr[][]={{'s',' ',' ','s',' ',' ',' ',' ',' '},
+	                  {' ',' ',' ',' ',' ',' ',' ',' ',' '},
+	                  {'c',' ',' ','s',' ',' ',' ','s',' '},
+	                  {' ',' ',' ',' ',' ',' ',' ',' ',' '},
+	                  {' ','s',' ',' ','s',' ',' ',' ',' '},
+	                  {' ',' ',' ',' ',' ',' ',' ',' ',' '},
+	                  {' ','s',' ','s',' ',' ',' ',' ',' '},
+	                  {'s',' ',' ',' ','s',' ',' ','s',' '}};
+	                 
+
+	   int row=arr.length;
+	   int col=arr[0].length;
+	   
+	   boolean vis[][]=new boolean[row][col];
+	   
+	   int r=2,c=0;
+	   path="";
+	  
+	  solve(r,c,row,col,r+1,c,arr,"",'D');
+	   System.out.println(path);
+	}
+	public static boolean isSave(int r,int c,int row,int col){
+	      if(r<0 || c<0  || r>=row || c>=col){
+	        
+	          return false;
+	      }
+	         //  System.out.println("D");
+	    return true;
+	}
+	public static void solve(int r,int c, int row,int col,int m ,int n,char arr[][],String ans,char dir){
+	    if(m==r && n==c){
+	        path+="  "+ans;
+	        return;
+	    }
+	  
+	  int R=m,C=n;
+
+	 if(dir=='D'){
+	     R=m+1;
+	     C=n;
+	     
+	 }
+	 else if(dir=='U'){
+	      R=m-1;
+	     C=n;
+	      
+	 }
+	 else if(dir=='R'){
+	     R=m;
+	     C=n+1;
+	     
+	 }
+	 else{
+	    R=m;
+	    C=n-1;
+	   
+	 }
+
+	 
+	 if(isSave(R,C,row,col)){
+	   
+	     solve(r,c,row,col,R,C,arr,ans+dir,dir);
+	     if(arr[R][C]=='s'){
+	         arr[R][C]=' ';
+	         if(dir=='D')
+	           solve(r,c,row,col,R,C,arr,ans+"R",'R');
+	         else if(dir=='U')
+	             solve(r,c,row,col,R,C,arr,ans+"L",'L');
+	         else if(dir=='R')
+	            solve(r,c,row,col,R,C,arr,ans+"U",'U');
+	         else
+	          solve(r,c,row,col,R,C,arr,ans+"D",'D');
+	          
+	        arr[R][C]='s';
+	     }
+	     
+	 }
+	 
+	     
+	}
+}
